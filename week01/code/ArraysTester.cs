@@ -5,7 +5,7 @@ public static class ArraysTester {
     public static void Run() {
         // Sample Test Cases (may not be comprehensive)
         Console.WriteLine("\n=========== PROBLEM 1 TESTS ===========");
-        double[] multiples = MultiplesOf(7, 5);
+        List<double> multiples = MultiplesOf(7, 5);
         Console.WriteLine($"<double>{{{string.Join(',', multiples)}}}"); // <double>{7, 14, 21, 28, 35}
         multiples = MultiplesOf(1.5, 10);
         Console.WriteLine($"<double>{{{string.Join(',', multiples)}}}"); // <double>{1.5, 3.0, 4.5, 6.0, 7.5, 9.0, 10.5, 12.0, 13.5, 15.0}
@@ -32,14 +32,17 @@ public static class ArraysTester {
     /// integer greater than 0.
     /// </summary>
     /// <returns>array of doubles that are the multiples of the supplied number</returns>
-    private static double[] MultiplesOf(double number, int length)
-    {
-        // TODO Problem 1 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+    /// 
+    private static List<double> MultiplesOf(double number, int length) 
+    {      
+        List<double> multiples = new(); // Create a new list
+        for (int i = 1; i <= length; i++) { // Then we need to create a for loop, and set the parameters
+            
+            multiples.Add(number * i); // Use the Add() method and multiply the number by the index
 
-        return new double[0]; // replace this return statement with your own
+        }
+        return multiples; // Return the list.
+        
     }
     
     /// <summary>
@@ -52,10 +55,12 @@ public static class ArraysTester {
     /// </summary>
     private static void RotateListRight(List<int> data, int amount)
     {
-        // TODO Problem 2 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        // Since there is already a List created, we dont need to crete a new one. We will use the data keep in the List<int> data
+
+        var reverseData = data.GetRange(data.Count - amount, amount); // We get the range of the data with the GetRange() method, to get the last amount
+
+        data.RemoveRange(data.Count - amount, amount); // Then we remove the last amount of the list with the RemoveRange() method
+        data.InsertRange(0, reverseData); // Finally, to add this amount at the beginnig of the list, we use InsertRang()     
 
     }
 }
