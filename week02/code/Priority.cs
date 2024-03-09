@@ -8,20 +8,32 @@
         // Test Cases
 
         // Test 1
-        // Scenario: 
-        // Expected Result: 
+        // Scenario: Get the next value from an empty queue
+        // Expected Result: The queue is empty
         Console.WriteLine("Test 1");
-
-        // Defect(s) Found: 
+        _ = new PriorityQueue();
+        priorityQueue.Dequeue();
+        
+        // Defect(s) Found: None.
 
         Console.WriteLine("---------");
 
         // Test 2
-        // Scenario: 
-        // Expected Result: 
+        // scenario: Create a queue with the following: Aaron[2], Juliette[forever], Adam[2], Kenji[7]
+        // Expected Result: Kenji, Aaron, Adam, Juliette.
         Console.WriteLine("Test 2");
-
-        // Defect(s) Found: 
+        priorityQueue = new PriorityQueue();
+        priorityQueue.Enqueue("Aaron", 2);
+        priorityQueue.Enqueue("Juliette", 0); 
+        priorityQueue.Enqueue("Adam", 2);
+        priorityQueue.Enqueue("Kenji", 7);
+        // Console.WriteLine(priorityQueue);
+        while (priorityQueue.Length > 0)
+        {
+            string value = priorityQueue.Dequeue();
+            Console.WriteLine(value);
+        }
+        // Defect(s) Found: In the Dequeue(), the if statement has the priority greater or equal to the current index, instead of just greater than.
 
         Console.WriteLine("---------");
 
