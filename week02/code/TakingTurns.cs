@@ -56,7 +56,7 @@
             players.GetNextPerson();
             // Console.WriteLine(players);
         }
-        // Defect(s) Found: Each person was being removed from the queue in the GetNextPerson(), no metter hoe much turns they had
+        // Defect(s) Found: Each person was being removed from the queue in the GetNextPerson(), no metter how much turns they had
 
         Console.WriteLine("---------");
 
