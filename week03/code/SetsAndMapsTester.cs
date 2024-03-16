@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 
 public static class SetsAndMapsTester {
@@ -25,7 +27,7 @@ public static class SetsAndMapsTester {
         // 32 & 23
         // 94 & 49
         // 31 & 13
-
+  
         // Problem 2: Degree Summary
         // Sample Test Cases (may not be comprehensive) 
         Console.WriteLine("\n=========== Census TESTS ===========");
@@ -108,9 +110,19 @@ public static class SetsAndMapsTester {
     /// </summary>
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
     private static void DisplayPairs(string[] words) {
-        // To display the pair correctly use something like:
-        // Console.WriteLine($"{word} & {pair}");
-        // Each pair of words should displayed on its own line.
+      HashSet<string> wordPair = new();
+      foreach (string word in words) {
+        string pair = ArrayWord(word);
+        if (wordPair.Contains(pair)){
+            Console.WriteLine($"{word} & {pair}");
+        }
+        wordPair.Add(word);
+      }
+      static string ArrayWord(string word) {
+        char[] charArray = word.ToCharArray();
+        Array.Reverse(charArray);
+        return new string(charArray);
+      }
     }
 
     /// <summary>
@@ -131,7 +143,14 @@ public static class SetsAndMapsTester {
         var degrees = new Dictionary<string, int>();
         foreach (var line in File.ReadLines(filename)) {
             var fields = line.Split(",");
-            // Todo Problem 2 - ADD YOUR CODE HERE
+            string degreeEarned = fields[3];
+
+            if (degrees.ContainsKey(degreeEarned)){
+                degrees[degreeEarned]++;
+            }
+            else {
+                degrees.Add(degreeEarned, 1);
+            }   
         }
 
         return degrees;
@@ -157,8 +176,32 @@ public static class SetsAndMapsTester {
     /// # Problem 3 #
     /// #############
     private static bool IsAnagram(string word1, string word2) {
-        // Todo Problem 3 - ADD YOUR CODE HERE
-        return false;
+        var dictionaryWord1 = BuiltCharFrequencyDictionary(word1);
+        var dictionaryWord2 = BuiltCharFrequencyDictionary(word2);
+        if (dictionaryWord1.Count != dictionaryWord2.Count){
+            return false;
+        }
+        foreach (var kvp in dictionaryWord1){
+            if (!dictionaryWord2.TryGetValue(kvp.Key, out int value) || value != kvp.Value){
+                return false;
+            }
+        }
+        return true;
+    }
+    private static Dictionary<char, int> BuiltCharFrequencyDictionary(string word)
+    {
+        var dictionaryWord = new Dictionary<char, int>();
+
+        foreach (char c in word.Where(ch => ch != ' ')){
+            char normalC = char.ToUpper(c);
+            if (!dictionaryWord.ContainsKey(normalC)){
+                dictionaryWord[normalC] = 1;
+            }
+            else{
+                dictionaryWord[normalC] += 1;
+            }
+        }
+        return dictionaryWord;
     }
 
     /// <summary>
@@ -230,10 +273,18 @@ public static class SetsAndMapsTester {
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
         var featureCollection = JsonSerializer.Deserialize<FeatureCollection>(json, options);
+        
+        foreach (var feature in featureCollection.Features)
+        {
+            var place = feature.Properties.Place;
+            var mag = feature.Properties.Mag;
 
+            Console.WriteLine($"{place} - Mag {mag}");
+        }
         // TODO:
         // 1. Add code in FeatureCollection.cs to describe the JSON using classes and properties 
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to print out each place a earthquake has happened today and its magitude.
     }
+    
 }
